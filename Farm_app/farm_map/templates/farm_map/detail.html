@@ -1,0 +1,63 @@
+{% extends 'farm_map/base.html' %}
+{% load static %}
+
+{% block title %}
+{{request.user.username}} | {{zone}} management
+{% endblock title %}
+
+{% block content %}
+
+<script defer src='{% static "farm_map/detail.js"%}'></script>
+{% csrf_token %}
+<div class="block-container">
+  <hr>
+
+<h1 style="text-align: center;">{{zone}}</h1>
+{% for stack in zone.stack.all %} {% if stack.empty %}
+<div onclick="modalBox({{stack.id}})" class="stack-detail"><p>Stack: {{stack.identity}}</p> <h1>EMPTY</h1> <p></p></div>
+{% else %}
+<div onclick="modalBox({{stack.id}})" class="stack-detail {% if not stack.maintained %} to_fix {% endif %}">
+  <p>Stack: {{stack.identity}}</p> 
+  <p> 
+    
+     | <span class={% if stack.log_post.all.last.to_scout %} scouted {% else %} not-scouted {% endif %}>&#9711 </span>
+      | {% if stack.scout_week %}  
+          {{stack.get_scout_week_display}} week
+      
+  </p> 
+
+    <p style="width:40%">Scouted: {{stack.log_post.last.log }}</p> 
+    {% else %}
+    <p style='width:40%'></p>
+    {% endif %}
+  <br>
+  <p>Harvest date: {{stack.harvest_date}} </p>
+  <p>
+    {% if stack.calibration_check %} <span class={% if not stack.calibration.all.last.to_calibrate %} not-calibrated>Calibration Required   {% else %}> &#160&#160  {% endif %} {% else %} &#160&#160 {% endif %}
+    </span>
+  </p>
+  <p style="width:40%">{% if stack.calibration_check %}Calibration: {{stack.calibration.last.log}}{% endif %}</p>
+  
+</div>
+{% endif %}
+{% endfor %}
+</div>
+
+
+<div class="modal">
+  <div class="modal-content">
+    <span class="close-btn">❌</span>
+    <h3 style="text-align:center">Please select an action.</h3> <br>
+    <div class="modal-div" >
+        
+      <button class="scout-btn" onclick="scoutStack(${stack.id})">Scout</button>
+      <button class="calibrate-btn" onclick="calibrate(${stack.id})">Calibration</button>
+      <button class="harvest-btn" onclick="harvestStack(${stack.id})">Harvest</button>
+      <button class="plant-btn" id="plant-btn" onclick="plantStack(${stack.id})">Plant</button>
+        
+    </div>
+  </div>
+</div>
+
+
+{% endblock content %}

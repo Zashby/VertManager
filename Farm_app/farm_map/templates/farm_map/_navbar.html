@@ -1,0 +1,31 @@
+{% load static %}
+
+<div class="navbar">
+    <div style="display:flex;">
+        <img  src="{% static 'farm_map/farm_logo_transparent.png' %}" alt="">     
+    </div>
+    <div class='side-bar'>
+        <div style='height:50%; overflow:hidden;'>
+            <h2>{{request.user.username}}</h2>
+        </div>
+        <hr class="">
+        <div class="nav-navigation">
+            <a href=" {% url 'farm_map:index' %} ">Home</a>
+            {% if not request.user.is_anonymous %}
+            <a href="{% url 'farm_map:logout' %} ">Logout</a>
+            <div class="quick-view">
+                <div class="quick-view-text">Quick View</div>
+                <div class="quick-view-drop">
+                    <a href=" {% url 'farm_map:lights' %} ">Lights</a>
+                    <a href=" {% url 'farm_map:forecast' %}">Harvest Forecast</a>
+                    <a href=" {% url 'farm_map:task_viewer' %} ">Task Viewer</a>
+                </div>
+            </div>
+            {% else %}
+            <a href="{% url 'farm_map:login' %} ">Login</a>
+            <a href=" ">Register</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+

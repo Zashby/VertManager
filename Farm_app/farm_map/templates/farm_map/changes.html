@@ -1,0 +1,32 @@
+{% extends 'farm_map/base.html' %}
+
+{% block content %}
+<div>
+<hr>
+    <div class="block-container">
+        <h1 style="text-align:center">Growing Higher</h1>
+
+        <div style="display:flex; flex-direction:column;" class="farm-display">
+            <div class="stack-container; overflow-y:visible" style="flex-direction:column; padding:0 10%; margin:0 auto;   background-color:#2b2d2e; width:60%; height: 30%; border:5px solid green" >
+                <p style="text-align:center;margin:10px">Hello, and thank you for coming in to the changelog.</p>
+                <p style="text-align:center;margin:10px">I intend to use this for complete transparency in what is being worked on, and I want you all to help me do it!</p>
+                <p style="text-align:center;margin:10px">Honest critique, comments, suggestions, and new capability suggestions are welcome!</p>
+            </div>
+         
+
+            <div class="stack-container;  " style="overflow-y:visible;display:grid; grid-template: 'a b b' 'a c c' 'a c c' ;padding:1rem 1rem; margin:0 auto;   background-color:#2b2d2e; width:68%; height: 100%; border:5px solid green;" >
+                <!-- TODO: integrate with Vue -->
+                <div style="grid-area:a; height:500px; border:2px solid red;"><input style="height:10%" type="checkbox" name="global" id=""><hr><div class="stack-container" style="height:80%;padding:.5rem">{% for log in change_logs %}
+                    <div class="stack" style="justify-content:space-evenly; padding: .5rem;"><p style="word-break:break-all">{{log.suggestion}}</p></div> {% endfor %}
+                </div></div>
+                <div style="grid-area:b; border:2px solid blue;margin-bottom:.5rem; padding:.5rem"><form style="display:flex; flex-direction:column; " action="{% url 'farm_map:changes' %}" method="POST">{% csrf_token %}  {{form}}
+                <button>Submit</button></form></div>
+                <div style="grid-area:c; border:2px solid green ; padding: auto .5rem">ChangeBox</div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock content %}

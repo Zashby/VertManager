@@ -1,0 +1,79 @@
+{% extends 'farm_map/base.html' %}
+
+
+{% block title %} {{request.user.username}} | Task Viewer {% endblock title %}
+
+
+{% block content %}
+<div class="block-container">
+    {% csrf_token %}
+<hr>
+<h1 style="text-align: center;">{{farm.name}} | Task Viewer</h1>
+<div class="overall-display">
+    <div class="task-container">
+        <div><h2>Scouting</h2><hr></div>
+            <div class="task-log">
+                {%for zone in farm.zone.all%}
+                <div class="zone-container-task ">
+                    
+                    <h3>{{zone}}</h3>
+                    <hr>
+               
+                    {% for stack in zone.stack.all %}
+                        {% if stack.to_scout %}
+                        <div onclick=window.location='{% url "farm_map:zone_view" stack.zone.id %}' class='task'>
+                            <p>Stack: {{stack.identity}} | </p> <hr><p style=' width:100%;background-color:rgb(54, 58, 61)'> | Last Scout: {{stack.log_post.last.date }}</p>
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                {%endfor%}
+            </div>
+
+    </div>
+    <div class="task-container">
+        <div><h2>Calibration</h2><hr></div>
+            <div class="task-log">
+                {%for zone in farm.zone.all%}
+                <div class="zone-container-task ">
+                    
+                    <h3>{{zone}}</h3>
+                    <hr>
+               
+                    {% for stack in zone.stack.all %}
+                        {% if stack.to_calibrate %}
+                        <div onclick=window.location='{% url "farm_map:zone_view" stack.zone.id %}' class='task'>
+                            <p>Stack: {{stack.identity}} | </p> <hr><p style=' width:100%;background-color:rgb(54, 58, 61)'> | Last Calibration: {{stack.calibration.last.date }}</p>
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                {%endfor%}
+            </div>
+    </div>
+    <div class="task-container">
+        <div><h2>Light Change</h2><hr></div>
+            <div class="task-log">
+                {%for zone in farm.zone.all%}
+                <div class="zone-container-task ">
+                    
+                    <h3>{{zone}}</h3>
+                    <hr>
+               
+                    {% for stack in zone.stack.all %}
+                        {% if stack.light_change %}
+                        <div class='task' style='cursor:default'>
+                            <p>Stack: {{stack.identity}} | </p><hr> <p style=' width:100%;background-color:rgb(54, 58, 61)'> | Light Change: {{stack.log_post.last.date }}</p>
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                {%endfor%}
+            </div>
+    </div>
+
+</div>
+
+</div>
+
+{% endblock content %}

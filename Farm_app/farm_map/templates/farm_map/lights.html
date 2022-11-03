@@ -1,0 +1,64 @@
+{% extends 'farm_map/base.html' %}
+
+{% load static %}
+
+{% block title %} {{request.user.username}} | Lights {% endblock title %}
+
+{% block content %}
+<div class="block-container">
+<hr>
+<script defer src={% static 'farm_map/lights.js' %} ></script>
+<h1 class='info-container' style="text-align: center">{{farm.name}} | <span class="info-container">Lights</span> </h1><p class="infocard">This page is intended to show the current light schedule of plants as well as plants scheduled to have a light schedule change. All light states are controlled by the database. Theoretically, this could be employed to control the lights remotely as well.</p>
+<div class="farm-display">
+    {% csrf_token %}
+    {% for zone in farm.zone.all %}
+    <div class='zone-container'>
+    <div class="zone-header">
+        <h3 style="text-align: center;">{{ zone }}</h3><p>&#127811</p><h3 style="text-align: center">{{ zone.produce}}</h3>
+    </div>
+    <hr>
+        <div style='display:flex; flex-direction:row; justify-content:space-between;'><h4 style="padding-left: 10px; ">stack</h4> 
+            <p style='padding-right: 10px; text-align:center; margin: auto 0;'>Switch </p>
+        </div>
+    <div class="stack-container-light" >
+    {% for stack in zone.stack.all %}
+
+        <div id="stack-{{stack.id}}" class= "stack{%if not stack.empty %} {% if stack.light_change %} to_fix {% endif %} {% endif %}" onclick='lightSwitch({{stack.id}})' style='height:100%;'>
+            <p style="width:25px ;padding-left:5px" >{{ stack.identity}} |</p>
+            <div id={{stack.id}}  class='light-container' >
+                {% if not stack.empty %}
+                {% if stack.light_change %} s
+                <div id="light-drop-{{stack.id}}" class='light-dropdown'>
+                    <div>
+                        <button id="light-button" onclick="lightScheduleFix(event, {{stack.id}})">Corrected</button>
+                    </div>
+                </div>
+                {% endif %}
+                 {% if stack.light_on %} 
+                    <img id="light-image-{{stack.id}}" style='height:100%; width:100%;' src="{% static 'farm_map/lit.png' %}" alt="">
+                 {%else%}
+                 <img id="light-image-{{stack.id}}" style='height:100%; width:100%;' src="{% static 'farm_map/dim.png'%}" alt="">  
+                
+                 {%endif%}
+                 
+                {% else %} 
+                <img id="light-image-{{stack.id}}" style='height:100%; width:100%;' src="{% static 'farm_map/empty.png'%}" alt=""> 
+                {% endif %}
+                
+                
+                </div>
+                
+            
+            <p>&#160&#160</p>
+        </div>
+    
+    
+
+{% endfor %}
+    </div>
+</div>
+{% endfor %}
+</div>
+</div>
+
+{% endblock content %}

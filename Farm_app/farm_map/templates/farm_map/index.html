@@ -1,0 +1,74 @@
+{% extends 'farm_map/base.html' %}
+
+
+{% block title %}
+{{request.user.username}} | {{farm.name}}
+{% endblock title %}
+
+
+{% block content  %}
+
+<div class='block-container'>
+    <hr>
+        {% if farm %}
+        <h1 style="text-align: center">{{farm.name}}</h1>
+        <div class="farm-display">
+            
+            {% for zone in farm.zone.all %}
+            <div onclick=window.location='{% url "farm_map:zone_view" zone.id %}' class='zone-container'>
+            <div class="zone-header">
+                <h3 style="text-align: center;">{{ zone }}</h3><p>&#127811</p><h3 style="text-align: center">{{ zone.produce}}</h3>
+            </div>
+            <hr>
+                <h4 style="height:5%;padding-left: 10px">stack</h4>
+            <div class="stack-container">
+            {% for stack in zone.stack.all %}
+        
+                <div class= "stack {% if not stack.empty %}  {% if not stack.maintained %} to_fix {% endif %} {% endif %}">
+                    <p style="width:25px ;padding-left:5px" >{{ stack.identity}} |</p>
+                    <div style="display:flex; justify-content: space-between; width:44px;">
+                        {% if not stack.empty %}<p class={% if stack.log_post.all.last.to_scout %} scouted {% else %} not-scouted {% endif %}>&#9711 </p> 
+                        {% if stack.calibration_check %} {% if not stack.calibration.all.last.to_calibrate %}
+                        <p>&#160&#160</p><p class= not-calibrated > Calibrate</p> {% endif %}{% endif %} {% else %} <h4>EMPTY </h4>{% endif %}
+                    </div>
+                     <p style ='width:120px'>{% if stack.scout_week %} {{stack.get_scout_week_display}} week {% endif %}</p>
+                </div>
+                
+            
+        
+        {% endfor %}
+            </div>
+        </div>
+        {% endfor %}
+        
+    </div>
+        {% else %}
+        <h1 style="text-align:center">Growing Higher</h1>
+
+        <div style="display:flex; flex-direction:column;" class="farm-display">
+            <div class="stack" style="flex-direction:column; padding:0 10%; margin:0 auto;   background-color:#2b2d2e; width:50%; height: 30%; border:5px solid green" >
+                <p style="text-align:center;margin:10px">Hello, and welcome to Growing Higher! A project aimed to help vertical farmers track the metrics necessary for maintaining the quality of your product!</p>
+                <p style="text-align:center;margin:10px">This Project was originally developed as a personal capstone project, but I am now pushing to see it utilised wherever it can be of use. </p>
+                <p style="text-align:center;margin:10px">Feel free to tour the program using the proxy farms provided below.</p>
+            </div>
+            {% for farm in dir_list %}
+                <div class="stack" style="padding:0 5%; margin:0 auto;   background-color:#2b2d2e; width:50%"><h3 style="text-align:center;">{{farm}}</h3> <h4>Somewhere or other USA</h4></div>
+            {% endfor %}
+
+            <div class="stack" style="flex-direction:column; padding:0 10%; margin:0 auto;   background-color:#2b2d2e; width:50%; height: 30%; border:5px solid green" >
+                <p style="text-align:center;margin:10px">Feel free to reach out to me to provide quality of life suggestions. I cannot promise I will respond immediately, but I will try to respond in a timely manner.</p>
+                <p style="text-align:center;margin:10px">If you are interested in providing comments, suggestions, or have questions I might be able to answer feel free to reach out at: <a href="">HAWTJOBS@growinghigher.com</a></p>
+            </div>
+        </div>
+
+        {% endif %}
+
+
+</div>
+
+
+
+
+
+
+{% endblock content  %}

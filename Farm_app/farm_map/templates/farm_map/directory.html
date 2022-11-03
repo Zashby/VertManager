@@ -1,0 +1,24 @@
+{% extends 'farm_map/base.html' %}
+
+{% load static %}
+
+
+
+{% block content %}
+<script defer src='{% static "farm_map/homepage.js" %}'></script>
+
+{% csrf_token %}
+
+
+<div class="block-container">
+    <hr>
+    {% for farm in farms %}
+    <div class='farm-choice' onclick="farmChoice({{farm.id}})">
+        <h3>{{farm.name}}</h3> <h3>&#160&#160</h3>
+    </div>
+    <div></div>
+    {% endfor %}
+</div>
+
+
+{% endblock content %}

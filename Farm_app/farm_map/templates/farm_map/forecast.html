@@ -1,0 +1,16 @@
+{% extends 'farm_map/base.html' %}
+
+{% block title %} {{farm.name}} | Harvest Forecast {% endblock title %}
+
+{% block content %}
+<div class="block-container">
+<hr>
+    <div>
+        <h1 style="text-align:center">Harvest Forecast</h1>
+    </div>
+    <div style="display:flex; margin: 0 auto; flex-direction: column;">{{form}} <br> <button>Submit</button></div>
+</div>
+
+
+
+{% endblock content %}
