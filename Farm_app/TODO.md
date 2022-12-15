@@ -24,19 +24,9 @@
   - [x] Have a presentation ready project
   - [x] End of week create a new branch save for safety
 
-- Week 4 - 
-- [ ] Cry about my horrible color choice / style for a bit
-- [ ] Last minute error checking, probably get some other people to try to break the app for me
-- [ ] Think about worthwhile talking points for presentation
-- [ ] Day before presentation make a new branch save for safety
-- Week 5 and beyond!
-- [ ] Realize I should have just worked on the DnD / boardgame local group finder app instead
-- [ ] Assess implementation of secondary goals and ability to create new farms in app
-- [ ] Find somewhere to deploy this app through since Heroku hates free people
-- [ ] Have a good lie down
-
 
 TODO:
+- [] Manage user registration
   - [] Pagination / expand size of farm past 6 zones for larger scale projects
   - [/] implement suggestion box
     -[] implement voting system for suggestion box

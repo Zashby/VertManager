@@ -36,10 +36,12 @@ class Command(BaseCommand):
             print(f'creating user{x}')
             user = User.objects.create(
                 username=f'user{x}',
-                password='password',
+                
                 farm_location=farm
 
             )
+            user.set_password('password')
+            user.save()
             users.append(user)
 
         for x in range(1,4):
