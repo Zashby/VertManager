@@ -57,14 +57,21 @@ a{
 .side-bar hr{
   border-color:#C238E0;
   margin:0;
-  height:2px;
+  height:5px;
   background-color: #C238E0;
   bottom: 0;
 }
 
-.side-bar h2{
-  padding:2%;
-   margin:auto auto;
+
+.side-bar h3{
+  padding: 1% 2%;
+   margin:auto 0;
+text-align:center
+}
+
+.side-bar h4{
+  padding: 1% 2%;
+   margin:auto 0;
 text-align:center
 }
 
