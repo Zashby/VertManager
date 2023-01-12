@@ -6,8 +6,16 @@ from django.contrib.auth.models import AbstractUser
 import datetime
 import time
 
+class Species(models.Model):
+    name = models.CharField(max_length=50)
+    #Specifics regarding plant (nutrient requirements, alkalinity, etc.)
+    # Maybe a link to an external website regarding plant
+    def __str__(self):
+        return self.name
+
 class Produce(models.Model):
     type = models.CharField(max_length=25)
+    species= models.ForeignKey(Species, related_name='species', blank=True, null=True, on_delete=models.PROTECT)
     light_change = models.BooleanField(default=False)
     change_day = models.IntegerField(blank = True, null = True)
     light_schedule_1 = models.FloatField(blank=True,)
@@ -41,8 +49,6 @@ class Zone(models.Model):
     def __str__(self):
         return f'Zone-{self.identity}'
 
-    def zone_scouted(self):
-        pass
 
 
 class Stack(models.Model):
@@ -173,9 +179,14 @@ class Change_Log(models.Model):
     date = models.DateField(auto_now_add = True, blank=True, null=True)
     suggestion = models.TextField(max_length=255)
     restricted = models.BooleanField(default=True)
+    immolate = models.BooleanField(default=False)
     Working = models.BooleanField(default=False)
     completed = models.BooleanField(default=False)
     votes = models.ManyToManyField(User, related_name='voter')
+    down_votes = models.ManyToManyField(User, related_name='down_voter')
 
     def voted(self):
         return(len(self.votes))
+
+    def downVote(self):
+        return (len(self.down_vote))

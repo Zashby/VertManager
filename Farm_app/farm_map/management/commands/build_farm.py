@@ -1,7 +1,7 @@
 import zoneinfo
 from django.core.management.base import BaseCommand
 import random
-from farm_map.models import Produce, Farm_location, Position, Zone, Stack, User, Log_post, Calibration
+from farm_map.models import Produce, Farm_location, Position, Zone, Stack, User, Log_post, Calibration, Species
 import datetime
 
 
@@ -13,16 +13,24 @@ class Command(BaseCommand):
         User.objects.exclude(is_superuser=True).delete()
         Farm_location.objects.all().delete()
         Produce.objects.all().delete()
+        species_1 = Species.objects.create(
+            name='planticus maximus'
+        )
         produce_1 = Produce.objects.create(
             type= 'Whole Head Lettuce',
+            species = species_1,
             light_schedule_1 = 13.0,
             light_schedule_2 = 10.0,
             light_change = True,
             change_day = 14,
             harvest_time = 28
         )
+        species_2 =Species.objects.create(
+            name='planticus minimus'
+        )
         produce_2 = Produce.objects.create(
             type= 'Loose Leaf Lettuce',
+            species=species_2,
             light_schedule_1 = 13.5,
             harvest_time = 21
         )
