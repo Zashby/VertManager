@@ -27,4 +27,6 @@ urlpatterns = [
     path('forecast/', views.harvest_forecast, name='forecast'),
 
     path('change/', views.changelog, name='changes'),
+
+    path('register/', views.register, name='register'),
 ]

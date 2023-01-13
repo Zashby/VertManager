@@ -1,10 +1,10 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse
-from .models import Farm_location, Zone, Stack, Log_post, Calibration, Change_Log
+from .models import Farm_location, Zone, Stack, Log_post, Calibration, Change_Log, User
 import json 
-from .forms import LoginForm, Harvest_forecast_form, LoginModelForm, Change_log_form
+from .forms import LoginForm, Harvest_forecast_form, LoginModelForm, Change_log_form, BuildFarm
 from django.urls import reverse
-
+from django.core.paginator import Paginator
 
 from django.contrib import auth
 from django.utils import timezone
@@ -43,7 +43,9 @@ def index(request):
             user=request.user
             farms = Farm_location.objects.filter(user=user)
             for farm in farms:
-                context['farm'] = farm
+                context['farm'] = farm 
+                context['zones'] = [zone for zone in farm.zone.all()]
+                print(context)
         else:
             dir_list = []
             for farm in Farm_location.objects.all():
@@ -192,6 +194,7 @@ def light_schedule(request):
             farms = Farm_location.objects.filter(user=user)
             for farm in farms:
                 context['farm'] = farm
+                context['zones'] = [zone for zone in farm.zone.all()]
                 # Output Checking
                 # for zone in farm.zone.all():
                 #     for stack in zone.stack.all():
@@ -209,6 +212,7 @@ def task_viewer(request):
         farms = Farm_location.objects.filter(user=request.user)
         for farm in farms:
             context['farm'] = farm
+            context['zones'] = [zone for zone in farm.zone.all()]
             
 
         return render(request, 'farm_map/task.html', context)
@@ -244,4 +248,20 @@ def changelog(request):
 
     return render(request, 'farm_map/changes.html', context)
                 
-  
+def register(request):
+    context=dict()
+    context['form'] = BuildFarm()
+    if request.method == "GET":
+        context['form'] = BuildFarm()
+    if request.method =='POST':
+        form = BuildFarm(request.POST)
+        if form.is_valid():
+            print(form)
+            # farm = Farm_location.objects.create(
+            #     name=form.cleaned_data['farm_name']
+            # )
+            for zone in range(int(form.cleaned_data['zones'])):
+                print(zone)
+
+    
+    return render(request, 'farm_map/register.html', context)

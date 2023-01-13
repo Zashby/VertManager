@@ -11,7 +11,7 @@
 <h1 class='info-container' style="text-align: center">{{farm.name}} | <span class="info-container">Lights</span> </h1><p class="infocard">This page is intended to show the current light schedule of plants as well as plants scheduled to have a light schedule change. All light states are controlled by the database. Theoretically, this could be employed to control the lights remotely as well.</p>
 <div class="farm-display">
     {% csrf_token %}
-    {% for zone in farm.zone.all %}
+    {% for zone in zones %}
     <div class='zone-container'>
     <div class="zone-header">
         <h3 style="text-align: center;">{{ zone }}</h3><p>&#127811</p><h3 style="text-align: center">{{ zone.produce}}</h3>

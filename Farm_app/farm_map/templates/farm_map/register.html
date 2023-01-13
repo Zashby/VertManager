@@ -1,0 +1,31 @@
+{% extends 'farm_map/base.html' %}
+
+{% block title %}
+Vertical Registration
+{% endblock title %}
+
+{% block content %}
+
+<div class='block-container'>
+    <hr>
+<h1 style="text-align:center">Vertical Manager</h1>
+
+<div style="display:flex; flex-direction:column;" class="farm-display">
+    <div class="stack" style="display:flex;flex-direction:column; padding:0 10%; margin:0 auto;   background-color:#2b2d2e; width:75%; height: 10%; border:5px solid green" >
+        <p style="text-align:center;margin:10px">Welcome! Here we will walk through the process of generating a vertical farm! </p>
+        <p style="text-align:center;margin:10px">Be sure to knock this out in one go so there is no risk of work being lost!</p>
+    </div>
+    <div class="stack" style="flex-direction:column; padding:1% 10%; margin:0 auto;   background-color:#2b2d2e; width:50%; height:35%; border:5px solid green" >
+        <form action="" method='POST'>
+        {% for section in form %}
+        <div style='display:flex; flex-direction:row; height:8%; align-items:center; margin:0 5%; '><p>{{section.label}}</p> <div style="padding:0 5%">{{section}}</div></div>
+       {% endfor %}
+       {% csrf_token %}
+        </div>
+        <button style="width:20%; align-self:center">Register Farm</button>
+    </form>
+     
+</div>
+</div>       
+{% endblock content %}
+        

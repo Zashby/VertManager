@@ -138,7 +138,7 @@ text-align:center
 
 
 .footer{
-  grid-row:3;
+  float:bottom;
   background-color: #25a55f;
   float:bottom;
 }
@@ -273,7 +273,7 @@ box-shadow: 0 8px 16px 0 #c138e080;
   font-size: 16px;
   cursor: pointer;
   font-weight:600;
-  display:flex;
+  align-self: center;
 }
 
 .light-dropdown button:hover{

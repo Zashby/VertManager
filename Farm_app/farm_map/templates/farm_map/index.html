@@ -14,7 +14,7 @@
         <h1 style="text-align: center">{{farm.name}}</h1>
         <div class="farm-display">
             
-            {% for zone in farm.zone.all %}
+            {% for zone in zones %}
             <div onclick=window.location='{% url "farm_map:zone_view" zone.id %}' class='zone-container'>
             <div class="zone-header">
                 <h3 style="text-align: center;">{{ zone }}</h3><p>&#127811</p><h3 style="text-align: center">{{ zone.produce}}</h3>
@@ -43,7 +43,7 @@
         
     </div>
         {% else %}
-        <h1 style="text-align:center">Growing Higher</h1>
+        <h1 style="text-align:center">Vertical Manager</h1>
 
         <div style="display:flex; flex-direction:column;" class="farm-display">
             <div class="stack" style="flex-direction:column; padding:0 10%; margin:0 auto;   background-color:#2b2d2e; width:50%; height: 30%; border:5px solid green" >
