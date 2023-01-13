@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse
-from .models import Farm_location, Zone, Stack, Log_post, Calibration, Change_Log, User
+from .models import Farm_location, Zone, Stack, Log_post, Calibration, Change_Log, User, Produce
 import json 
 from .forms import LoginForm, Harvest_forecast_form, LoginModelForm, Change_log_form, BuildFarm
 from django.urls import reverse
@@ -257,11 +257,34 @@ def register(request):
         form = BuildFarm(request.POST)
         if form.is_valid():
             print(form)
-            # farm = Farm_location.objects.create(
-            #     name=form.cleaned_data['farm_name']
-            # )
-            for zone in range(int(form.cleaned_data['zones'])):
-                print(zone)
+            produce_1 = Produce.objects.create(
+            type= 'Default',
+            light_schedule_1 = 13.0,
+            harvest_time = 28
+            )
+            farm = Farm_location.objects.create(
+                 name=form.cleaned_data['farm_name'],
+            )
+            newUser= User.objects.create(
+                username=form.cleaned_data['username'],
+                first_name=form.cleaned_data['first_name'],
+                last_name=form.cleaned_data['last_name']
+            )
+            newUser.set_password(f"{form.cleaned_data['password']}")
+            newUser.save()
+            for x in range(1,int(form.cleaned_data['zones'])+1):
+                zone = Zone.objects.create(
+                    identity=x,
+                    farm = farm,
+                    produce = produce_1
+                )
+                for y in range(1, int(form.cleaned_data['stacks'])+1):
+                    Stack.objects.create(
+                    zone = zone,
+                    identity = y,
+                    empty=True
+                )
+        return redirect(reverse('farm_map:login'))       
 
     
     return render(request, 'farm_map/register.html', context)

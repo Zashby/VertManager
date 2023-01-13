@@ -20,7 +20,7 @@ class Produce(models.Model):
     change_day = models.IntegerField(blank = True, null = True)
     light_schedule_1 = models.FloatField(blank=True,)
     light_schedule_2 = models.FloatField(blank=True, null=True)
-    harvest_time = models.IntegerField()
+    harvest_time = models.PositiveIntegerField(default=28)
     
     def __str__(self):
         return self.type
@@ -42,7 +42,7 @@ class Position(models.Model):
 
 
 class Zone(models.Model):
-    identity = models.IntegerField()
+    identity = models.PositiveIntegerField()
     produce = models.ForeignKey(Produce, related_name='zone', null=True, blank=True, on_delete=models.SET_NULL)
     farm = models.ForeignKey(Farm_location, related_name='zone', blank = True, on_delete=models.CASCADE)
 
@@ -64,7 +64,7 @@ class Stack(models.Model):
         (2, 'second')
     ]
     zone = models.ForeignKey(Zone, related_name='stack', null=True, blank=True, on_delete=models.CASCADE)
-    identity = models.IntegerField()
+    identity = models.PositiveIntegerField()
     scout_week = models.IntegerField(choices= scout_choices, blank=True, null=True)
     scout_update = models.DateField(blank=True, null=True)
     calibration_check = models.BooleanField(default=False)
