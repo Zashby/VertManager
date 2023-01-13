@@ -268,7 +268,8 @@ def register(request):
             newUser= User.objects.create(
                 username=form.cleaned_data['username'],
                 first_name=form.cleaned_data['first_name'],
-                last_name=form.cleaned_data['last_name']
+                last_name=form.cleaned_data['last_name'],
+                farm_location=farm
             )
             newUser.set_password(f"{form.cleaned_data['password']}")
             newUser.save()
