@@ -1,0 +1,55 @@
+{% extends 'farm_map/base.html' %}
+
+
+{% block title %}
+{{request.user.username}} | {{farm.name}} - manager
+{% endblock title %}
+
+
+{% block content  %}
+
+<div class='block-container'>
+    <hr>
+        {% if farm %}
+        <h1 style="text-align: center">{{farm.name}}</h1>
+        <div class="farm-display">
+            
+            {% for zone in zones %}
+            <div onclick=window.location='{% url "farm_map:zone_view" zone.id %}' class='zone-container'>
+            <div class="zone-header">
+                <h3 style="text-align: center;">{{ zone }}</h3><p>&#127811</p><h3 style="text-align: center">{{ zone.produce}}</h3>
+            </div>
+            <hr>
+                <h4 style="height:5%;padding-left: 10px">stack</h4>
+            <div class="stack-container">
+            {% for stack in zone.stack.all %}
+        
+                <div class= "stack {% if not stack.empty %}  {% if not stack.maintained %} to_fix {% endif %} {% endif %}">
+                    <p style="width:25px ;padding-left:5px" >{{ stack.identity}} |</p>
+                    <div style="display:flex; justify-content: space-between; width:44px;">
+                        <p >&#9711 </p> 
+                        
+                        <p>&#160&#160</p><p> Calibrate</p>  <h4></h4>
+                    </div>
+                     <p style ='width:120px'>week </p>
+                </div>
+                
+            
+        
+        {% endfor %}
+            </div>
+        </div>
+        
+        
+    </div>
+        
+
+
+</div>
+
+
+
+
+
+
+{% endblock content  %}

@@ -289,3 +289,8 @@ def register(request):
 
     
     return render(request, 'farm_map/register.html', context)
+
+@login_required(login_url='../login/')
+def management(request):
+    context={}
+    pass
