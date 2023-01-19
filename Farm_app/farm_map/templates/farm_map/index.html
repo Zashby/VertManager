@@ -2,7 +2,7 @@
 
 
 {% block title %}
-{{request.user.username}} | {{farm.name}}
+{% if farm %}  {{request.user.username}} | {{farm.name}} {% else %}  Vertical Manager {% endif %}
 {% endblock title %}
 
 
@@ -20,7 +20,9 @@
                 <h3 style="text-align: center;">{{ zone }}</h3><p>&#127811</p><h3 style="text-align: center">{{ zone.produce}}</h3>
             </div>
             <hr>
-                <h4 style="height:5%;padding-left: 10px">stack</h4>
+            <div style="display:flex; flex-direction: row; justify-content:space-between; margin:0 4%; height:10%">
+                <h4 >stack number</h4> <h4>Scouted Week</h4>
+            </div>
             <div class="stack-container">
             {% for stack in zone.stack.all %}
         

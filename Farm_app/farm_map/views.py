@@ -45,7 +45,7 @@ def index(request):
             for farm in farms:
                 context['farm'] = farm 
                 context['zones'] = [zone for zone in farm.zone.all()]
-                print(context)
+                
         else:
             dir_list = []
             for farm in Farm_location.objects.all():
@@ -293,4 +293,16 @@ def register(request):
 @login_required(login_url='../login/')
 def management(request):
     context={}
-    pass
+    
+    if request.method == 'GET':
+        if request.user.is_authenticated:
+            user=request.user
+            farms = Farm_location.objects.filter(user=user)
+            for farm in farms:
+                context['farm'] = farm 
+                context['zones'] = [zone for zone in farm.zone.all()]
+        
+        return render(request, 'farm_map/management.html', context)
+    
+    else:
+        return redirect(reverse('farm_map:index'))

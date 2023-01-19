@@ -6,6 +6,12 @@ from django.contrib.auth.models import AbstractUser
 import datetime
 import time
 
+class Farm_location(models.Model):
+    name = models.CharField(max_length=40)
+
+    def __str__(self):
+        return self.name
+
 class Species(models.Model):
     name = models.CharField(max_length=50)
     #Specifics regarding plant (nutrient requirements, alkalinity, etc.)
@@ -21,16 +27,10 @@ class Produce(models.Model):
     light_schedule_1 = models.FloatField(blank=True,)
     light_schedule_2 = models.FloatField(blank=True, null=True)
     harvest_time = models.PositiveIntegerField(default=28)
+    farm = models.ForeignKey(Farm_location, related_name='produce', blank=True, null=True, on_delete=models.CASCADE)
     
     def __str__(self):
         return self.type
-
-
-class Farm_location(models.Model):
-    name = models.CharField(max_length=40)
-
-    def __str__(self):
-        return self.name
 
 
 class Position(models.Model):

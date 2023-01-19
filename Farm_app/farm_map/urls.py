@@ -24,7 +24,7 @@ urlpatterns = [
 
     path('tasks/', views.task_viewer, name='task_viewer'),
 
-    path('forecast/', views.harvest_forecast, name='forecast'),
+    path('management/', views.management, name='management'),
 
     path('change/', views.changelog, name='changes'),
 
