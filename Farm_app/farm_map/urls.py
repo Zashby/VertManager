@@ -14,6 +14,8 @@ urlpatterns = [
     
     path('api/stack/<int:stack_id>', views.api_stack, name='api_stack'),
 
+    path('api/farm_manage/<int:farm_id>', views.api_management, name='api_management'),
+
     path('login/', views.login, name='login'),
 
     path('zoneview/harvest/', views.harvest, name='harvest'),

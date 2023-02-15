@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse
 from .models import Farm_location, Zone, Stack, Log_post, Calibration, Change_Log, User, Produce
 import json 
-from .forms import LoginForm, Harvest_forecast_form, LoginModelForm, Change_log_form, BuildFarm
+from .forms import LoginForm, Harvest_forecast_form, LoginModelForm, Change_log_form, BuildFarm, ChangeCalibration
 from django.urls import reverse
 from django.core.paginator import Paginator
 
@@ -43,6 +43,7 @@ def index(request):
             user=request.user
             farms = Farm_location.objects.filter(user=user)
             for farm in farms:
+                print(farm.id)
                 context['farm'] = farm 
                 context['zones'] = [zone for zone in farm.zone.all()]
                 
@@ -122,6 +123,20 @@ def api_stack(request, stack_id):
 
         })
         return JsonResponse(list(stack_list), safe=False)
+
+@login_required(login_url='../login/')
+def api_management(request, farm_id):
+    farms=list()
+    farm=Farm_location.objects.get(id=farm_id)
+    for zone in farm.zone.all():
+        zones=[zone.id]
+        for stack in zone.stack.all():
+            zones.append({
+                "stack_id":stack.id,
+                "calibration_check":stack.calibration_check,
+            })
+        farms.append(zones)
+    return JsonResponse(list(farms), safe=False)
 
 
 @login_required(login_url='../../login/')
@@ -298,6 +313,7 @@ def management(request):
         if request.user.is_authenticated:
             user=request.user
             farms = Farm_location.objects.filter(user=user)
+            context['form'] = ChangeCalibration
             for farm in farms:
                 context['farm'] = farm 
                 context['zones'] = [zone for zone in farm.zone.all()]
@@ -305,4 +321,5 @@ def management(request):
         return render(request, 'farm_map/management.html', context)
     
     else:
+        print (request.POST)
         return redirect(reverse('farm_map:index'))

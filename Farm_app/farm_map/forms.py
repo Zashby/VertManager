@@ -33,4 +33,9 @@ class BuildFarm(forms.Form):
     farm_name = forms.CharField(max_length=25, label = 'farm name')
     zones = forms.IntegerField( label='Number of zones', min_value=0)
     stacks = forms.IntegerField( label='Number of stacks per zone', min_value=0)
-    
+
+class ChangeCalibration(forms.ModelForm):
+
+    class Meta:
+        model=Stack
+        fields = ["calibration_check"]    
