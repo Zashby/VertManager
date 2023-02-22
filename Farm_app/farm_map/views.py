@@ -43,7 +43,7 @@ def index(request):
             user=request.user
             farms = Farm_location.objects.filter(user=user)
             for farm in farms:
-                print(farm.id)
+                
                 context['farm'] = farm 
                 context['zones'] = [zone for zone in farm.zone.all()]
                 
@@ -69,6 +69,7 @@ def zone_view(request, zone_id):
 
 @login_required(login_url='../../login/')
 def scout(request):
+    """Accepts both calibration and scout logs, recording current date"""
     if request.method == 'GET':
         return redirect('farm_map:index')
     if request.method == 'POST':
@@ -158,6 +159,7 @@ def harvest(request):
 
 @login_required(login_url='../../login/')
 def plant(request):
+    """Starts planting cycle from start"""
     if request.method == 'GET':
         return redirect('farm_map:index')
     if request.method == "POST":
@@ -173,6 +175,8 @@ def plant(request):
 
 @login_required(login_url='../login/')
 def light_schedule(request):
+    """Updates light status. Intended to push a request to onsight hardware to change light status, but this would require specifics regarding equipment on site. As is, just
+    acts as a reminder for time schedule changes and a fun button press."""
     # Update light state
     context = {}
     if request.method == 'POST':
@@ -235,6 +239,7 @@ def task_viewer(request):
 # TODO: Harvest forecast formula implementation
 @login_required(login_url='../login/')
 def harvest_forecast(request):
+    """This function is intended for profitability analytics, but I lack the information regarding what is required to make such determinations."""
     if request.user.is_authenticated:
         if request.method == 'GET':
             context = { 'form': Harvest_forecast_form}
@@ -245,6 +250,7 @@ def harvest_forecast(request):
 
 @login_required(login_url='../login/')
 def changelog(request):
+    """Creates new changelog for recorded date. Records restriction state and change request."""
     context = {}
     if request.user.is_authenticated:
         context['form'] = Change_log_form()
@@ -264,6 +270,7 @@ def changelog(request):
     return render(request, 'farm_map/changes.html', context)
                 
 def register(request):
+    """Creates new Farm_Location instance using input form data"""
     context=dict()
     context['form'] = BuildFarm()
     if request.method == "GET":
@@ -307,6 +314,7 @@ def register(request):
 
 @login_required(login_url='../login/')
 def management(request):
+    print(farm.id)
     context={}
     
     if request.method == 'GET':
