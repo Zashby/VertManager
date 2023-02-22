@@ -1,18 +1,22 @@
 {% extends 'farm_map/base.html' %}
-
+{% load static %}
 
 {% block title %}
+
 {{request.user.username}} | {{farm.name}} - manager
+<script defer src={% static 'farm_map/manageVue.js' %} ></script>
 {% endblock title %}
 
 
 {% block content  %}
 
+
 <div class='block-container'>
     <hr>
-    
-        <h1 style="text-align: center">{{farm.name}} {{farm.id}}</h1>
-        <div class="farm-display" id="app">
+    <demo-component></demo-component>
+        <h1 id="identity" value="{{farm.id}}" style="text-align: center">{{farm.name}} {{farm.id}}</h1>
+        
+        <div class="farm-display" id="app" >
             
             {% for zone in zones %}
             
@@ -53,7 +57,6 @@
 
 
 </div>
-
 
 
 
