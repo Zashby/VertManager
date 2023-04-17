@@ -7,13 +7,16 @@
 
 
 {% block content  %}
-
+{% load static %}
+<script defer src={% static 'farm_map/management.js' %}></script>
 <div class='block-container'>
     <hr>
     
         <h1 style="text-align: center">{{farm.name}}</h1>
         <div class="farm-display" value="{{farm.id}}">
             
+<!-- TODO add produce management as well as way to make additional produce presets -->
+
             {% for zone in zones %}
             
             <form class='zone-container' method="POST" action="{% url 'farm_map:management' %} ">
@@ -22,29 +25,30 @@
             </div>
             <hr>
                 <h4 style="height:5%;padding-left: 10px">stack ID</h4>
+            
             <div class="stack-container" style="height:60%">
             {% for stack in zone.stack.all %}
         
                 <div class= "stack">
-                    <p style="width:25px ;padding-left:5px" >{{ stack.identity}} |</p>
+                    <p style="width:25px ;padding-left:5px" >{{ forloop.counter }} |</p>
                     <div style="display:flex; justify-content: space-between;">
                         
                         
-                        <div style='align-self:center; margin:50% 0'>{{form}}</div>  
+                        <div style='align-self:center; margin:50% 0' value={{stack.id}} >Calibration Check || <input onchange="calibrationChange({{stack.id}})" type="checkbox" {% if stack.calibration_check %} checked {% endif %}></div>  
+                        
                     </div>
                     <div></div>
 
-                </div>
+            </div>
                 
             
         {% endfor %}
         
             </div>
             <div style="display:flex; justify-content:center">
-                
-                <button>Apply</button>
+                {% csrf_token %}
             </form>
-            {% csrf_token %}
+            
         </div>
         {% endfor %}
         

@@ -1,4 +1,5 @@
 from django import forms
+from django.forms.models import inlineformset_factory
 from .models import User, Zone, Stack, Harvest_Forecast, Change_Log
 
 
@@ -12,11 +13,13 @@ class LoginModelForm(forms.ModelForm):
         model = User
         fields = ['username', 'password']
 
-class Harvest_forecast_form(forms.ModelForm):
 
-    class Meta:
-         model = Harvest_Forecast
-         fields = ['stack', 'dry_weight']
+# Not implemented
+# class Harvest_forecast_form(forms.ModelForm):
+
+#     class Meta:
+#          model = Harvest_Forecast
+#          fields = ['stack', 'dry_weight']
 
 class Change_log_form(forms.ModelForm):
 

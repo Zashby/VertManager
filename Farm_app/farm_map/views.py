@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect
+from django.forms.models import modelformset_factory
 from django.http import HttpResponse, JsonResponse
 from .models import Farm_location, Zone, Stack, Log_post, Calibration, Change_Log, User, Produce
 import json 
-from .forms import LoginForm, Harvest_forecast_form, LoginModelForm, Change_log_form, BuildFarm, ChangeCalibration
+from .forms import LoginForm, LoginModelForm, Change_log_form, BuildFarm, ChangeCalibration
 from django.urls import reverse
 from django.core.paginator import Paginator
 
@@ -237,16 +238,16 @@ def task_viewer(request):
         return render(request, 'farm_map/task.html', context)
 
 # TODO: Harvest forecast formula implementation
-@login_required(login_url='../login/')
-def harvest_forecast(request):
-    """This function is intended for profitability analytics, but I lack the information regarding what is required to make such determinations."""
-    if request.user.is_authenticated:
-        if request.method == 'GET':
-            context = { 'form': Harvest_forecast_form}
+# @login_required(login_url='../login/')
+# def harvest_forecast(request):
+#     """This function is intended for profitability analytics, but I lack the information regarding what is required to make such determinations."""
+#     if request.user.is_authenticated:
+#         if request.method == 'GET':
+#             context = { 'form': Harvest_forecast_form}
 
     
 
-            return render(request, 'farm_map/forecast.html', context) 
+#             return render(request, 'farm_map/forecast.html', context) 
 
 @login_required(login_url='../login/')
 def changelog(request):
@@ -314,20 +315,35 @@ def register(request):
 
 @login_required(login_url='../login/')
 def management(request):
-    print(farm.id)
     context={}
-    
+    # zoneFormSet = modelformset_factory(Stack, form=ChangeCalibration, extra=0) did not fit needs
     if request.method == 'GET':
         if request.user.is_authenticated:
             user=request.user
             farms = Farm_location.objects.filter(user=user)
             context['form'] = ChangeCalibration
             for farm in farms:
+                
                 context['farm'] = farm 
                 context['zones'] = [zone for zone in farm.zone.all()]
+                
+                
         
         return render(request, 'farm_map/management.html', context)
     
-    else:
-        print (request.POST)
-        return redirect(reverse('farm_map:index'))
+    if request.method =="POST":
+        print(request.POST)
+        data = json.loads(request.body)
+        print(data)
+        stack_id = data.get('stack_id', '')
+        stack = Stack.objects.get(id = stack_id)
+        if data.get('type') == 'calibChange':
+            stack.calibration_check = not stack.calibration_check
+            stack.save()
+            return JsonResponse({
+                'response': 'changed',
+                'stack_id':stack.id,
+            })
+        print(request.POST)
+
+            
